@@ -6,12 +6,11 @@ use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use frontend\widgets\Alert;
 use frontend\assets\MaterialAsset;
-
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-AppAsset::register($this);
-//MaterialAsset::register($this);
+//AppAsset::register($this);
+MaterialAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
