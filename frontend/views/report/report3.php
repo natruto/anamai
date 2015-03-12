@@ -13,5 +13,4 @@ echo GridView::widget([
         'after' => 'ประมวลผล ณ ' . date('Y-m-d H:i:s'),
     ]]
 )
-?>    
-<div class=""
+?>   

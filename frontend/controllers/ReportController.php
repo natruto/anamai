@@ -52,7 +52,7 @@ h.hoscode,h.hosname
         ]);
         return $this->render('report3', [
                     'dataProvider' => $dataProvider,
-                    '$sql'=>
+             
         ]);
     }
 }
