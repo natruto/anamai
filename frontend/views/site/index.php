@@ -21,4 +21,6 @@ Html::a('ลิงค์แบบที่ 3', ['test/test1','a'=>'1']);
 ?>
 </div>
 
-
+<?php
+// test database Yii::$app->db->open();
+?>
