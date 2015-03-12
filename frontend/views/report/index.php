@@ -1,9 +1,14 @@
 <?php
 /* @var $this yii\web\View */
+use yii\helpers\Html;
 ?>
-<h1>report/index</h1>
+<h1>หมวดรายงาน HPC1</h1>
 
 <p>
-    You may change the content of this page by modifying
-    the file <code><?= __FILE__; ?></code>.
+    <?=html::a('รายงานนับถือศาสนา',['report/report1'])?>
+</p>
+<p>
+    <?=html::a('รายงานฝากครรภ์ 12 weeks',['report/report2'])?>
+</p><p>
+    <?=html::a('รายงาน xxxxx',['report/report3'])?>
 </p>
