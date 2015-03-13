@@ -6,97 +6,94 @@ use miloschuman\highcharts\Highcharts;
 
 $this->params['breadcrumbs'][] = ['label' => 'รายงาน', 'url' => ['report/index']];
 $this->params['breadcrumbs'][] = 'รายงานนับถือศาสนา';
+?>
 
+
+ <div id="chart" style="padding-bottom: 10px"></div>
+
+<?php
 echo GridView::widget([
     'dataProvider' => $dataProvider,
     'panel' => [
-        'before' => 'รายงาน xxxxx',
-        'after' => 'ประมวลผล ณ ' . date('Y-m-d H:i:s'),
+        'before' => 'รายงาน xxxx',
+        'after' => 'ประมวลผล ณ ' . date('Y-m-d H:i:s')
     ],
-    'columns'=>[
-        ['class'=>'yii\grid\SerialColumn'],
+    'columns' => [
+        ['class' => 'yii\grid\SerialColumn'],
         [
-            'attribute'=>'hoscode',
-            'header'=>'รหัสสถานบริการ'   
+            'attribute' => 'hoscode',
+            'header' => 'รหัสสถานบริการ',
         ],
-         [
-            'attribute'=>'hosname',
-            'format'=>'raw',
-            'value'=>  function ($model){
-                $hoscode=$model['hoscode'];
-                $hosname=$model['hosname'];
-                return Html::a(Html::encode($hosname),['report/report3','hoscode'=>$hoscode]);
+        [
+            'attribute' => 'hosname',
+            'format' => 'raw',
+            'value' => function($model) {
+                $hoscode = $model['hoscode'];
+                $hosname = $model['hosname'];
+                return Html::a(Html::encode($hosname), ['report/report3', 'hoscode' => $hoscode]);
             }
-        ],
-         [
-            'attribute'=>'total',
-            'header'=>'ประชาการทั้งหมด'
-        ],
-         [
-            'attribute'=>'buddha',
-            'header'=>'ศาสนาพุทธ (คน)'
-        ],
-         [
-            'attribute'=>'other',
-            'header'=>'อื่นๆ (คน)'
-        ],
-    ]]
-)
-?>    
+                ],
+                [
+                    'attribute' => 'total',
+                    'header' => 'ประชากรทั้งหมด(คน)'
+                ],
+                [
+                    'attribute' => 'buddha',
+                    'header' => 'ศาสนาพุทธ (คน)'
+                ],
+                [
+                    'attribute' => 'other',
+                    'header' => 'อื่นๆ (คน)'
+                ],
+            ]
+        ]);
+        ?>
 <?php
-echo Highcharts::widget([
-   'script'=>[
-       'highcharts-more',
-       'themes/grid'
-   ]
-]);
-?>
-<div id="chart"></div>
+        Highcharts::widget([
+            'scripts' => [
+                'highcharts-more',
+                'themes/grid'
+            ]
+        ]);
+        ?>
+
 <?php
-// chart begin
-$this->registerJs("
+        $categ = [];
+        for ($i = 0; $i < count($rawData); $i++) {
+            $categ[] = $rawData[$i]['hosname'];
+            //array_push($categ,'vvvv');
+        }
+        $js_categories = implode("','", $categ);
+        $data = [];
+        for ($i = 0; $i < count($rawData); $i++) {
+            $data[] = $rawData[$i]['buddha'];
+            //array_push($categ,'vvvv');
+        }
+        $js_data = implode(",", $data);
+        $this->registerJs("
 $(function () {
     $('#chart').highcharts({
+         colors: ['#ED921C', '#1F7CDB'],
         chart: {
             type: 'column'
         },
         title: {
-            text: 'Monthly Average Rainfall'
+            text: 'รายงานประชากรในเขตพื้นที่รับผิดชอบที่นับถือศาสนาพุทธ'
         },
         subtitle: {
-            text: 'Source: WorldClimate.com'
+            text: 'ปีงบประมาณ 2558'
         },
         xAxis: {
-            categories: [
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-                'Jul',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec'
-            ],
-            crosshair: true
+            categories: ['$js_categories'],
+            //crosshair: true
         },
         yAxis: {
             min: 0,
             title: {
-                text: 'Rainfall (mm)'
+                text: 'คน'
             }
         },
-        tooltip: {
-            headerFormat: '<span style=\"font-size:10px\">{point.key}</span><table>',
-            pointFormat: '<tr><td style=\"color:{series.color};padding:0\">{series.name}: </td>' +
-                '<td style=\"padding:0\"><b>{point.y:.1f} mm</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        },
+       
         plotOptions: {
             column: {
                 pointPadding: 0.2,
@@ -104,24 +101,11 @@ $(function () {
             }
         },
         series: [{
-            name: 'Tokyo',
-            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-
-        }, {
-            name: 'New York',
-            data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
-
-        }, {
-            name: 'London',
-            data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
-
-        }, {
-            name: 'Berlin',
-            data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
-
+            name: 'พุทธ',
+            data: [$js_data]
         }]
     });
 });
 ");
-// chart end
-?>
+// จบ chart
+        ?>
